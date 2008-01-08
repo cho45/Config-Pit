@@ -8,7 +8,7 @@ our @EXPORT = qw/pit_get/;
 
 *pit_get = \&get;
 
-use YAML ();
+use YAML::XS;
 use Path::Class;
 use File::HomeDir;
 use File::Spec;
@@ -23,6 +23,7 @@ our $profile_file = undef;
 sub get {
 	my ($name, %opts) = @_;
 	my $profile = _load();
+	
 	if ($opts{require}) {
 		unless (all { defined $profile->{$name}->{$_} } keys %{$opts{require}}) {
 			# merge
@@ -36,6 +37,7 @@ sub get {
 sub set {
 	my ($name, %opts) = @_;
 	my $result = {};
+
 	if ($opts{data}) {
 		$result = $opts{data};
 	} else {
@@ -43,7 +45,7 @@ sub set {
 		my $setting = $opts{config} || get($name);
 		# system
 		my $f = File::Temp->new(SUFFIX => ".yaml");
-		print $f YAML::Dump($setting);
+		print $f YAML::XS::Dump($setting);
 		close $f;
 		my $t = file($f->filename)->stat->mtime;
 		system $ENV{EDITOR}, $f->filename;
@@ -51,39 +53,42 @@ sub set {
 			warn "No changes.";
 			$result = get($name);
 		} else {
-			$result = set($name, data => YAML::LoadFile($f->filename));
+			$result = set($name, data => YAML::XS::LoadFile($f->filename));
 		}
 	}
 	my $profile = _load();
 	$profile->{$name} = $result;
-	YAML::DumpFile($profile_file, $profile);
+	YAML::XS::DumpFile($profile_file, $profile);
 	return $result;
 }
 
 sub switch {
 	my ($name, %opts) = @_;
+
 	$profile_file = File::Spec->catfile($directory, "$name.yaml");
 
 	my $config = _config();
 	$config->{profile} = $name;
-	YAML::DumpFile($config_file, $config);
+	YAML::XS::DumpFile($config_file, $config);
 }
 
 
 sub _load {
 	my $config = _config();
+
 	switch($config->{profile});
 
 	unless (-e $profile_file) {
-		YAML::DumpFile($profile_file, {});
+		YAML::XS::DumpFile($profile_file, {});
 	}
-	return YAML::LoadFile($profile_file);
+	return YAML::XS::LoadFile($profile_file);
 }
 
 sub _config {
+
 	(-e $directory) || $directory->mkpath(0, 0700);
 
-	my $config = eval { YAML::LoadFile($config_file) } || ({
+	my $config = eval { YAML::XS::LoadFile($config_file) } || ({
 		profile => "default"
 	});
 	return $config;

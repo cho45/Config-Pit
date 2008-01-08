@@ -4,7 +4,7 @@ all_from 'lib/Config/Pit.pm';
 
 requires 'Path::Class';
 requires 'File::Temp' => 0.20;
-requires 'YAML';
+requires 'YAML::XS'; # for Load(Dump({foo=>"0100"})); works fine.
 requires 'File::HomeDir';
 requires 'File::Spec';
 requires 'List::MoreUtils';
