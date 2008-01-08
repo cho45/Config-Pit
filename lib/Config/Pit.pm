@@ -3,6 +3,9 @@ package Config::Pit;
 use strict;
 use 5.8.1;
 
+use base qw/Exporter/;
+our @EXPORT = qw/pit_get/;
+
 use YAML ();
 use Path::Class;
 use File::HomeDir;
@@ -84,6 +87,7 @@ sub _config {
 	return $config;
 }
 
+*pit_get = *get;
 
 1;
 __END__
@@ -96,7 +100,7 @@ Config::Pit - Manage settings
 
   use Config::Pit;
 
-  my $config = Config::Pit::get("twitter.com", require => {
+  my $config = pit_get("twitter.com", require => {
     "username" => "your username on twitter",
     "password" => "your password on twitter"
   });
@@ -123,13 +127,17 @@ Get setting named C<setting_name> from current profile.
 
   my $config = Config::Pit::get("twitter.com");
 
+This is same as below:
+
+  my $config = pit_get("twitter.com");
+
 opts:
 
 =over
 
 =item require
 
-  my $config = Config::Pit::get("twitter.com", require => {
+  my $config = pit_get("twitter.com", require => {
     "username" => "your username on twitter",
     "password" => "your password on twitter"
   });

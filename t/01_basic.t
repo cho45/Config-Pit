@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 6;
+use Test::More tests => 8;
 use File::Temp;
 
 use Config::Pit;
@@ -28,6 +28,10 @@ is($config->{bar}, "baz", "set returned value");
 $config = Config::Pit::get("test");
 is($config->{foo}, "bar", "get returned value (after set)");
 is($config->{bar}, "baz", "get returned value (after set)");
+
+$config = pit_get("test");
+is($config->{foo}, "bar", "get returned value (exported sub)");
+is($config->{bar}, "baz", "get returned value (exported sub)");
 
 #my $config = Config::Pit::get("test", require => {
 #	"foo" => "foo test",
