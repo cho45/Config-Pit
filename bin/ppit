@@ -14,7 +14,7 @@ use Config::Pit;
     get    => sub { printf "%s\n", YAML::Dump(Config::Pit::get(shift)) },
     set    => \&Config::Pit::set,
     switch => \&Config::Pit::switch,
-}->{(shift || '')} || sub { pod2usage } )->($ARGV[1]);
+}->{(shift || '')} || \&pod2usage )->($ARGV[1]);
 
 __END__
 
