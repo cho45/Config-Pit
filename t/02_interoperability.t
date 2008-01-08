@@ -1,11 +1,15 @@
 use strict;
 use warnings;
 
-use Test::More tests => 3;
+use Test::More;
 use File::Temp;
 use Path::Class;
 
-plan skip_all => "ruby required" unless `ruby --version` =~ /^ruby/;
+if (`ruby --version` =~ /^ruby/) {
+	plan tests => 3;
+} else {
+	plan skip_all => "ruby required";
+}
 
 use Config::Pit;
 
@@ -27,7 +31,7 @@ is($config->{foo}, "0100", "string like octal number (get returned value)");
 
 my $profile = $Config::Pit::directory->file("default.yaml");
 
-my $ruby_res = `ruby -rpathname -ryaml -e 'print YAML.load_file(%($profile))["test"]["foo"]'`;
+my $ruby_res = `ruby -ryaml -e 'print YAML.load_file(%($profile))["test"]["foo"]'`;
 is($ruby_res, "0100", "ruby yaml");
 
 1;
