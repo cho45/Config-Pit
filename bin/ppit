@@ -1,0 +1,74 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use FindBin;
+use Path::Class;
+use YAML;
+use File::Temp;
+use Pod::Usage;
+
+use lib file( $FindBin::RealBin, '..', 'lib' )->stringify;
+use Config::Pit;
+
+my $command = shift;
+pod2usage if $command eq 'help' || !$command;
+
+my $CMD = {
+    get => sub {
+        my $name = shift;
+        printf "%s\n", YAML::Dump(Config::Pit::get($name));
+    },
+    set => sub {
+        return unless $ENV{EDITOR};
+        my $name = shift;
+        my $data = Config::Pit::get($name);
+
+        my $fh = File::Temp->new(SUFFIX => ".yaml");
+        print $fh YAML::Dump($data);
+        close $fh;
+        system $ENV{EDITOR}, $fh->filename;
+        $data = YAML::LoadFile($fh->filename);
+ 
+        Config::Pit::set($name, data => $data);
+    },
+    switch => sub {
+        my $name = shift;
+        Config::Pit::switch($name);
+    },
+};
+
+($CMD->{$command} || sub { pod2usage } )->(@ARGV);
+
+__END__
+
+=head1 SYNOPSIS
+
+    $ ppit [get|set|switch] <value>
+    $ ppit help
+
+ Options:
+        get <name>        => Get values of <name>.
+        set <name>        => Config values of name with $EDITOR.
+        switch <profile>  => Switch profile to <profile>.
+        help             => show this manual
+
+=head1 DESCRIPTION
+
+pit command for Perl
+
+=head1 AUTHOR
+
+Kazuhiro Osawa
+
+=head1 LICENSE
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=head1 SEE ALSO
+
+L<pit gem|http://lowreal.rubyforge.org/pit/>
+C<Config::Pit>
+
+=cut
+
