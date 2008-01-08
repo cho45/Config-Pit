@@ -6,6 +6,8 @@ use 5.8.1;
 use base qw/Exporter/;
 our @EXPORT = qw/pit_get/;
 
+*pit_get = \&get;
+
 use YAML ();
 use Path::Class;
 use File::HomeDir;
@@ -87,7 +89,6 @@ sub _config {
 	return $config;
 }
 
-*pit_get = *get;
 
 1;
 __END__
