@@ -10,25 +10,17 @@ use Pod::Usage;
 use lib file( $FindBin::RealBin, '..', 'lib' )->stringify;
 use Config::Pit;
 
-my $command = shift || 'help';
-pod2usage if $command eq 'help' || !$command;
-
-my $CMD = {
+({
     get => sub {
-        my $name = shift;
-        printf "%s\n", YAML::Dump(Config::Pit::get($name));
+        printf "%s\n", YAML::Dump(Config::Pit::get(shift));
     },
     set => sub {
-        my $name = shift;
-        Config::Pit::set($name);
+        Config::Pit::set(shift);
     },
     switch => sub {
-        my $name = shift;
-        Config::Pit::switch($name);
+        Config::Pit::switch($name || shift);
     },
-};
-
-($CMD->{$command} || sub { pod2usage } )->(@ARGV);
+}->{(shift || '')} || sub { pod2usage } )->(@ARGV[1..2]);
 
 __END__
 
