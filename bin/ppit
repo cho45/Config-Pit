@@ -11,16 +11,10 @@ use lib file( $FindBin::RealBin, '..', 'lib' )->stringify;
 use Config::Pit;
 
 ({
-    get => sub {
-        printf "%s\n", YAML::Dump(Config::Pit::get(shift));
-    },
-    set => sub {
-        Config::Pit::set(shift);
-    },
-    switch => sub {
-        Config::Pit::switch(shift);
-    },
-}->{(shift || '')} || sub { pod2usage } )->(@ARGV[1..2]);
+    get    => sub { printf "%s\n", YAML::Dump(Config::Pit::get(shift)) },
+    set    => \&Config::Pit::set,
+    switch => \&Config::Pit::switch,
+}->{(shift || '')} || sub { pod2usage } )->($ARGV[1]);
 
 __END__
 
