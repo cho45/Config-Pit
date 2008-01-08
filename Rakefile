@@ -15,6 +15,18 @@ task :clean => ["Makefile"] do
 	sh %{make clean}
 end
 
-file "Makefile" do
+desc "make install"
+task :install => ["Makefile"] do
+	sh %{sudo make install}
+end
+
+desc "make uninstall"
+task :uninstall => ["Makefile"] do
+	sh %{sudo make uninstall}
+end
+
+file "Makefile" => ["Makefile.PL"] do
 	sh %{perl Makefile.PL}
 end
+
+file "Makefile.PL"

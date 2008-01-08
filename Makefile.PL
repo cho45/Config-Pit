@@ -9,6 +9,8 @@ requires 'File::HomeDir';
 requires 'File::Spec';
 requires 'List::MoreUtils';
 
+install_script 'bin/ppit';
+
 build_requires 'Test::More';
 use_test_base;
 auto_include;
