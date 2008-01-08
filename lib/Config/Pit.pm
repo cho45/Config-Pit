@@ -7,8 +7,8 @@ use YAML ();
 use File::HomeDir;
 use File::Spec;
 use File::Util;
-use List::MoreUtils qw(all);
 use File::Temp;
+use List::MoreUtils qw(all);
 
 our $VERSION      = '0.01';
 our $directory    = File::Spec->catdir(File::HomeDir->my_home, ".pit");
@@ -90,9 +90,24 @@ Config::Pit - Manage online account settings
 
   use Config::Pit;
 
+  my $config = Config::Pit->get("twitter.com", require => {
+    "username" => "your username on twitter",
+    "password" => "your password on twitter"
+  });
+  # if the fields are not set, open setting by $EDITOR
+  # with YAML-dumped default values (specified at C<require>).
+
+  # use $config->{username}, $config->{password}
+
 =head1 DESCRIPTION
 
-Config::Pit is
+Config::Pit is account setting management library.
+Original library is written in Ruby and published as pit gem with management command.
+You can install it by rubygems:
+
+  $ sudo gem install pit
+  $ pit set twitter.com
+  # open setting of twitter.com with $EDITOR.
 
 =head1 AUTHOR
 
@@ -104,5 +119,7 @@ This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
 
 =head1 SEE ALSO
+
+L<pit gem|http://lowreal.rubyforge.org/pit/>
 
 =cut
