@@ -10,7 +10,7 @@ use Pod::Usage;
 use lib file( $FindBin::RealBin, '..', 'lib' )->stringify;
 use Config::Pit;
 
-my $command = shift;
+my $command = shift || 'help';
 pod2usage if $command eq 'help' || !$command;
 
 my $CMD = {
