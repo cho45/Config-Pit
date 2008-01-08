@@ -8,7 +8,7 @@ our @EXPORT = qw/pit_get/;
 
 *pit_get = \&get;
 
-use YAML::XS;
+use YAML::Syck;
 use Path::Class;
 use File::HomeDir;
 use File::Spec;
@@ -23,6 +23,8 @@ our $profile_file = undef;
 sub get {
 	my ($name, %opts) = @_;
 	my $profile = _load();
+	$YAML::Syck::ImplicitTyping = 1;
+	$YAML::Syck::SingleQuote    = 1;
 	
 	if ($opts{require}) {
 		unless (all { defined $profile->{$name}->{$_} } keys %{$opts{require}}) {
@@ -37,6 +39,8 @@ sub get {
 sub set {
 	my ($name, %opts) = @_;
 	my $result = {};
+	$YAML::Syck::ImplicitTyping = 1;
+	$YAML::Syck::SingleQuote    = 1;
 
 	if ($opts{data}) {
 		$result = $opts{data};
@@ -45,7 +49,7 @@ sub set {
 		my $setting = $opts{config} || get($name);
 		# system
 		my $f = File::Temp->new(SUFFIX => ".yaml");
-		print $f YAML::XS::Dump($setting);
+		print $f YAML::Syck::Dump($setting);
 		close $f;
 		my $t = file($f->filename)->stat->mtime;
 		system $ENV{EDITOR}, $f->filename;
@@ -53,42 +57,48 @@ sub set {
 			warn "No changes.";
 			$result = get($name);
 		} else {
-			$result = set($name, data => YAML::XS::LoadFile($f->filename));
+			$result = set($name, data => YAML::Syck::LoadFile($f->filename));
 		}
 	}
 	my $profile = _load();
 	$profile->{$name} = $result;
-	YAML::XS::DumpFile($profile_file, $profile);
+	YAML::Syck::DumpFile($profile_file, $profile);
 	return $result;
 }
 
 sub switch {
 	my ($name, %opts) = @_;
+	$YAML::Syck::ImplicitTyping = 1;
+	$YAML::Syck::SingleQuote    = 1;
 
 	$profile_file = File::Spec->catfile($directory, "$name.yaml");
 
 	my $config = _config();
 	$config->{profile} = $name;
-	YAML::XS::DumpFile($config_file, $config);
+	YAML::Syck::DumpFile($config_file, $config);
 }
 
 
 sub _load {
 	my $config = _config();
+	$YAML::Syck::ImplicitTyping = 1;
+	$YAML::Syck::SingleQuote    = 1;
 
 	switch($config->{profile});
 
 	unless (-e $profile_file) {
-		YAML::XS::DumpFile($profile_file, {});
+		YAML::Syck::DumpFile($profile_file, {});
 	}
-	return YAML::XS::LoadFile($profile_file);
+	return YAML::Syck::LoadFile($profile_file);
 }
 
 sub _config {
+	$YAML::Syck::ImplicitTyping = 1;
+	$YAML::Syck::SingleQuote    = 1;
 
 	(-e $directory) || $directory->mkpath(0, 0700);
 
-	my $config = eval { YAML::XS::LoadFile($config_file) } || ({
+	my $config = eval { YAML::Syck::LoadFile($config_file) } || ({
 		profile => "default"
 	});
 	return $config;
