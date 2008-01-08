@@ -19,17 +19,8 @@ my $CMD = {
         printf "%s\n", YAML::Dump(Config::Pit::get($name));
     },
     set => sub {
-        return unless $ENV{EDITOR};
         my $name = shift;
-        my $data = Config::Pit::get($name);
-
-        my $fh = File::Temp->new(SUFFIX => ".yaml");
-        print $fh YAML::Dump($data);
-        close $fh;
-        system $ENV{EDITOR}, $fh->filename;
-        $data = YAML::LoadFile($fh->filename);
- 
-        Config::Pit::set($name, data => $data);
+        Config::Pit::set($name);
     },
     switch => sub {
         my $name = shift;
@@ -50,7 +41,7 @@ __END__
         get <name>        => Get values of <name>.
         set <name>        => Config values of name with $EDITOR.
         switch <profile>  => Switch profile to <profile>.
-        help             => show this manual
+        help              => show this manual
 
 =head1 DESCRIPTION
 

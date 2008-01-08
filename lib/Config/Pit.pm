@@ -22,17 +22,7 @@ sub get {
 		unless (all { defined $profile->{$name}->{$_} } keys %{$opts{require}}) {
 			# merge
 			my %t = (%{$opts{require}}, %{$profile->{$name}});
-			# system
-			my $f = File::Temp->new(SUFFIX => ".yaml");
-			print $f YAML::Dump(\%t);
-			close $f;
-			my $t = file($f->filename)->stat->mtime;
-			system $ENV{EDITOR}, $f->filename;
-			if ($t == file($f->filename)->stat->mtime) {
-				warn "No changes.";
-			} else {
-				$profile->{name} = set($name, data => YAML::LoadFile($f->filename));
-			}
+			$profile->{$name} = set($name, config => \%t);
 		}
 	}
 	return $profile->{$name} || {};
@@ -40,7 +30,24 @@ sub get {
 
 sub set {
 	my ($name, %opts) = @_;
-	my $result  = $opts{data} || {};
+	my $result = {};
+	if ($opts{data}) {
+		$result = $opts{data};
+	} else {
+		return {} unless $ENV{EDITOR};
+		my $setting = $opts{config} || get($name);
+		# system
+		my $f = File::Temp->new(SUFFIX => ".yaml");
+		print $f YAML::Dump($setting);
+		close $f;
+		my $t = file($f->filename)->stat->mtime;
+		system $ENV{EDITOR}, $f->filename;
+		if ($t == file($f->filename)->stat->mtime) {
+			warn "No changes.";
+		} else {
+			$result = set($name, data => YAML::LoadFile($f->filename));
+		}
+	}
 	my $profile = _load();
 	$profile->{$name} = $result;
 	YAML::DumpFile($profile_file, $profile);
