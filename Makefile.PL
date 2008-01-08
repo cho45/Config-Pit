@@ -2,7 +2,7 @@ use inc::Module::Install;
 name 'Config-Pit';
 all_from 'lib/Config/Pit.pm';
 
-requires 'File::Util' => 0;
+requires 'Path::Class';
 requires 'File::Temp' => 0.20;
 requires 'YAML';
 requires 'File::HomeDir';

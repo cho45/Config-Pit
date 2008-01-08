@@ -4,18 +4,16 @@ use strict;
 use 5.8.1;
 
 use YAML ();
+use Path::Class;
 use File::HomeDir;
 use File::Spec;
-use File::Util;
 use File::Temp;
 use List::MoreUtils qw(all);
 
 our $VERSION      = '0.01';
-our $directory    = File::Spec->catdir(File::HomeDir->my_home, ".pit");
-our $config_file  = File::Spec->catfile($directory, "config.yaml");
+our $directory    = dir(File::HomeDir->my_home, ".pit");
+our $config_file  = $directory->file("config.yaml");
 our $profile_file = undef;
-
-my $futil = File::Util->new;
 
 sub get {
 	my ($name, %opts) = @_;
@@ -28,9 +26,9 @@ sub get {
 			my $f = File::Temp->new(SUFFIX => ".yaml");
 			print $f YAML::Dump(\%t);
 			close $f;
-			my $t = $futil->last_modified($f->filename);
+			my $t = file($f->filename)->stat->mtime;
 			system $ENV{EDITOR}, $f->filename;
-			if ($t == $futil->last_modified($f->filename)) {
+			if ($t == file($f->filename)->stat->mtime) {
 				warn "No changes.";
 			} else {
 				$profile->{name} = set($name, data => YAML::LoadFile($f->filename));
@@ -70,7 +68,7 @@ sub _load {
 }
 
 sub _config {
-	$futil->make_dir($directory, 0700, qw/--if-not-exists/);
+	(-e $directory) || $directory->mkpath(0, 0700);
 
 	my $config = eval { YAML::LoadFile($config_file) } || ({
 		profile => "default"
