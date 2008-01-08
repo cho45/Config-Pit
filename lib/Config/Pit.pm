@@ -44,6 +44,7 @@ sub set {
 		system $ENV{EDITOR}, $f->filename;
 		if ($t == file($f->filename)->stat->mtime) {
 			warn "No changes.";
+			$result = get($name);
 		} else {
 			$result = set($name, data => YAML::LoadFile($f->filename));
 		}
