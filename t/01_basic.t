@@ -3,6 +3,7 @@ use warnings;
 
 use Test::More tests => 8;
 use File::Temp;
+use Path::Class;
 
 use Config::Pit;
 
@@ -10,7 +11,7 @@ use Data::Dumper;
 sub p($) { warn Dumper shift }
 
 my $dir = File::Temp->newdir();
-$Config::Pit::directory = $dir->dirname;
+$Config::Pit::directory = dir($dir->dirname);
 
 my $config;
 
