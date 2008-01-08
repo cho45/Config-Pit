@@ -84,13 +84,13 @@ __END__
 
 =head1 NAME
 
-Config::Pit - Manage online account settings
+Config::Pit - Manage settings
 
 =head1 SYNOPSIS
 
   use Config::Pit;
 
-  my $config = Config::Pit->get("twitter.com", require => {
+  my $config = Config::Pit::get("twitter.com", require => {
     "username" => "your username on twitter",
     "password" => "your password on twitter"
   });
@@ -108,6 +108,32 @@ You can install it by rubygems:
   $ sudo gem install pit
   $ pit set twitter.com
   # open setting of twitter.com with $EDITOR.
+
+=over
+
+=item Config::Pit::get(setting_name, opts)
+
+Get setting named C<setting_name> from current profile.
+
+  my $config = Config::Pit::get("twitter.com");
+
+opts:
+
+=over
+
+=item require
+
+  my $config = Config::Pit::get("twitter.com", require => {
+    "username" => "your username on twitter",
+    "password" => "your password on twitter"
+  });
+
+C<require> specified, module check the required fields all exist in setting.
+If not exist, open the setting by $EDITOR with merged setting with current setting.
+
+=back
+
+=back
 
 =head1 AUTHOR
 
