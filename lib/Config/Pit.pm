@@ -71,11 +71,15 @@ sub switch {
 	$YAML::Syck::ImplicitTyping = 1;
 	$YAML::Syck::SingleQuote    = 1;
 
+	$name ||= "default";
+
 	$profile_file = File::Spec->catfile($directory, "$name.yaml");
 
 	my $config = _config();
+	my $ret = $config->{profile};
 	$config->{profile} = $name;
 	YAML::Syck::DumpFile($config_file, $config);
+	return $ret;
 }
 
 
@@ -160,6 +164,62 @@ opts:
 
 C<require> specified, module check the required fields all exist in setting.
 If not exist, open the setting by $EDITOR with merged setting with current setting.
+
+=back
+
+=item Config::Pit::set(setting_name, opts)
+
+Set setting named C<setting_name> to current profile.
+
+  Config::Pit::set("twitter.com"); #=> will open setting with $EDITOR
+
+opts:
+
+=over
+
+=item data
+
+  Config::Pit::set("twitter.com", data => {
+    username => "foobar",
+    password => "barbaz",
+  });
+
+When C<data> specified, will not open C<$EDITOR> and set the data directly.
+
+=over
+
+=item config
+
+
+  Config::Pit::set("twitter.com", config => {
+    username => "config description or default value",
+    password => "same as above",
+  });
+
+Open C<$EDITOR> with merged setting with specified config.
+
+=back
+
+=item Config::Pit::switch(profile_name);
+
+Switch profile to C<profile_name>.
+
+Profile is setting set:
+
+  $ pit get foobar
+  # foo bar...
+
+  $ pit switch devel
+  Switch profile to devel
+
+  $ pit get foobar
+  # bar baz
+
+  $ pit switch
+  Switch profile to default
+
+  $ pit get foobar
+  # foo bar...
 
 =back
 

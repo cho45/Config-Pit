@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 
-use Test::More tests => 11;
+use Test::More tests => 17;
 use File::Temp;
 use Path::Class;
 use YAML::Syck;
@@ -14,7 +14,7 @@ sub p($) { warn Dumper shift }
 my $dir = File::Temp->newdir();
 $Config::Pit::directory = dir($dir->dirname);
 
-my $config;
+my ($config, $p);
 
 $config = Config::Pit::get("test");
 is(ref($config), "HASH", "get returned value");
@@ -35,6 +35,17 @@ $config = pit_get("test");
 is($config->{foo}, "bar", "get returned value (exported sub)");
 is($config->{bar}, "baz", "get returned value (exported sub)");
 
+$p = Config::Pit::switch("profile");
+is($p, "default", "switch profile");
+$config = pit_get("test");
+is($config->{foo}, undef, "switch profile get value");
+is($config->{bar}, undef, "switch profile get value");
+
+$p = Config::Pit::switch();
+is($p, "profile", "switch profile");
+$config = pit_get("test");
+is($config->{foo}, "bar", "switch profile get value");
+is($config->{bar}, "baz", "switch profile get value");
 
 # EDITOR
 #
