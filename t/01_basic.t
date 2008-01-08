@@ -1,9 +1,10 @@
 use strict;
 use warnings;
 
-use Test::More tests => 8;
+use Test::More tests => 11;
 use File::Temp;
 use Path::Class;
+use YAML::Syck;
 
 use Config::Pit;
 
@@ -34,9 +35,53 @@ $config = pit_get("test");
 is($config->{foo}, "bar", "get returned value (exported sub)");
 is($config->{bar}, "baz", "get returned value (exported sub)");
 
-#my $config = Config::Pit::get("test", require => {
-#	"foo" => "foo test",
-#	"bar" => "bar test"
-#});
-#p $config;
-# TODO
+
+# EDITOR
+#
+Config::Pit::set("test", data => {});
+$ENV{EDITOR} = "";
+Config::Pit::set("test");
+is(ref($config), "HASH", "set with unset EDITOR");
+
+sub temppath {
+	return file(File::Temp->new()->filename)
+}
+
+my $exe = temppath();
+my $tst = temppath();
+
+my $fh = $exe->open("w", 0700) or die "open failed.";
+print $fh <<'EOF';
+#!/usr/bin/env perl
+use strict;
+
+my $a =  do { local $/; <ARGV> };
+
+my $tst = $ENV{TEST_FILE};
+open my $fh, ">$tst";
+print $fh $a;
+close $fh;
+EOF
+undef $fh;
+chmod 0700, $exe;
+
+$ENV{EDITOR}    = $exe;
+$ENV{TEST_FILE} = $tst;
+#system $exe, "Changes";
+#p $tst->slurp;
+
+my $data = {
+	foo => "0101",
+	bar => "0202",
+};
+
+Config::Pit::set("test", data => $data);
+Config::Pit::set("test");
+
+my $result = LoadFile($tst);
+
+is($result->{foo}, $data->{foo}, "editor test");
+is($result->{bar}, $data->{bar}, "editor test");
+
+
+
