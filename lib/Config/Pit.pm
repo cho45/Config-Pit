@@ -21,6 +21,7 @@ our $VERSION      = '0.01';
 our $directory    = dir(File::HomeDir->my_home, ".pit");
 our $config_file  = $directory->file("pit.yaml");
 our $profile_file = undef;
+our $verbose      = 1;
 
 sub get {
 	my ($name, %opts) = @_;
@@ -56,7 +57,7 @@ sub set {
 		my $t = file($f->filename)->stat->mtime;
 		system $ENV{EDITOR}, $f->filename;
 		if ($t == file($f->filename)->stat->mtime) {
-			warn "No changes.";
+			print STDERR "No changes." if $verbose;
 			$result = get($name);
 		} else {
 			$result = set($name, data => YAML::Syck::LoadFile($f->filename));
@@ -81,7 +82,7 @@ sub switch {
 	my $ret = $config->{profile};
 	$config->{profile} = $name;
 	YAML::Syck::DumpFile($config_file, $config);
-	print STDERR "Config::Pit: Profile switch to $name from $ret.\n" unless $name eq $ret;
+	print STDERR "Config::Pit: Profile switch to $name from $ret.\n" if $verbose && ($name ne $ret);
 	return $ret;
 }
 
