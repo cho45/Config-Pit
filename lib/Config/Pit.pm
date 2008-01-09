@@ -4,7 +4,7 @@ use strict;
 use 5.8.1;
 
 use base qw/Exporter/;
-our @EXPORT = qw/pit_get/;
+our @EXPORT = qw/pit_get pit_set pit_switch/;
 
 *pit_get    = \&get;
 *pit_set    = \&set;
