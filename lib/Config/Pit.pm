@@ -175,7 +175,7 @@ opts:
 
 =item B<require>
 
-Specfy fileds you want as key and hint (description or default value) of the field as value.
+Specify fields you want as key and hint (description or default value) of the field as value.
 
   my $config = pit_get("example.com", require => {
     "username" => "your username on example.com",
