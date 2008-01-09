@@ -238,4 +238,6 @@ it under the same terms as Perl itself.
 
 L<http://lowreal.rubyforge.org/pit/> is pit in Ruby.
 
+C<bin/ppit> is pit command in Perl.
+
 =cut

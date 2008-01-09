@@ -11,4 +11,5 @@
 \.gz$
 \.cvsignore
 \.shipit
+\.svn/
 ^t/9\d_.*\.t
