@@ -132,12 +132,21 @@ Config::Pit - Manage settings
 =head1 DESCRIPTION
 
 Config::Pit is account setting management library.
+This library automates editting settings used in scripts.
+
 Original library is written in Ruby and published as pit gem with management command.
+
 You can install it by rubygems:
 
   $ sudo gem install pit
   $ pit set example.com
   # open setting of example.com with $EDITOR.
+
+And Config::Pit provides ppit command which is pit command written in Perl.
+
+See:
+
+  $ ppit help
 
 =head1 FUNCTIONS
 
@@ -155,7 +164,7 @@ opts:
 
 =over
 
-=item require
+=item B<require>
 
   my $config = pit_get("example.com", require => {
     "username" => "your username on example.com",
@@ -177,7 +186,7 @@ opts:
 
 =over
 
-=item data
+=item B<data>
 
   Config::Pit::set("example.com", data => {
     username => "foobar",
@@ -186,7 +195,7 @@ opts:
 
 When C<data> specified, will not open C<$EDITOR> and set the data directly.
 
-=item config
+=item B<config>
 
 
   Config::Pit::set("example.com", config => {
