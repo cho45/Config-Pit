@@ -84,6 +84,8 @@ sub switch {
 }
 
 sub pipe {
+	local $YAML::Syck::ImplicitTyping = 1;
+	local $YAML::Syck::SingleQuote    = 1;
 	-t STDOUT ? print STDERR 'do not output to tty.' :  print Dump(get(shift)), "\n"; ## no critic
 }
 
