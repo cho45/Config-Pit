@@ -40,11 +40,6 @@ Rake::ShipitTask.new do |s|
 		raise "Any chages remain?\n#{`svn st`}" unless `svn st`.empty?
 	}.and {}
 	s.Step.new {
-		raise "svn2cl.sh is not found" unless system("svn2cl.sh", "--version")
-	}.and {
-		system("svn2cl.sh --break-before-msg=2 --group-by-day  --include-rev --separate-daylogs")
-	}
-	s.Step.new {
 		system "shipit", "-n"
 		print "Check dry-run result and press Any Key to continue (or cancel by Ctrl-C)."
 		$stdin.gets
