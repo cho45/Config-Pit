@@ -12,8 +12,8 @@ use Config::Pit;
 
 ({
     get    => \&Config::Pit::pipe,
-    set    => \&Config::Pit::set,
-    switch => \&Config::Pit::switch,
+    set    => \&pit_set,
+    switch => \&pit_switch,
 }->{(shift || '')} || \&pod2usage )->($ARGV[1]);
 
 __END__
