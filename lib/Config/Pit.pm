@@ -23,8 +23,8 @@ our $profile_file = undef;
 sub get {
 	my ($name, %opts) = @_;
 	my $profile = _load();
-	$YAML::Syck::ImplicitTyping = 1;
-	$YAML::Syck::SingleQuote    = 1;
+	local $YAML::Syck::ImplicitTyping = 1;
+	local $YAML::Syck::SingleQuote    = 1;
 	
 	if ($opts{require}) {
 		unless (all { defined $profile->{$name}->{$_} } keys %{$opts{require}}) {
@@ -39,8 +39,8 @@ sub get {
 sub set {
 	my ($name, %opts) = @_;
 	my $result = {};
-	$YAML::Syck::ImplicitTyping = 1;
-	$YAML::Syck::SingleQuote    = 1;
+	local $YAML::Syck::ImplicitTyping = 1;
+	local $YAML::Syck::SingleQuote    = 1;
 
 	if ($opts{data}) {
 		$result = $opts{data};
@@ -68,8 +68,8 @@ sub set {
 
 sub switch {
 	my ($name, %opts) = @_;
-	$YAML::Syck::ImplicitTyping = 1;
-	$YAML::Syck::SingleQuote    = 1;
+	local $YAML::Syck::ImplicitTyping = 1;
+	local $YAML::Syck::SingleQuote    = 1;
 
 	$name ||= "default";
 
@@ -85,8 +85,8 @@ sub switch {
 
 sub _load {
 	my $config = _config();
-	$YAML::Syck::ImplicitTyping = 1;
-	$YAML::Syck::SingleQuote    = 1;
+	local $YAML::Syck::ImplicitTyping = 1;
+	local $YAML::Syck::SingleQuote    = 1;
 
 	switch($config->{profile});
 
@@ -97,8 +97,8 @@ sub _load {
 }
 
 sub _config {
-	$YAML::Syck::ImplicitTyping = 1;
-	$YAML::Syck::SingleQuote    = 1;
+	local $YAML::Syck::ImplicitTyping = 1;
+	local $YAML::Syck::SingleQuote    = 1;
 
 	(-e $directory) || $directory->mkpath(0, 0700);
 
