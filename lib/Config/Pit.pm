@@ -236,6 +236,6 @@ it under the same terms as Perl itself.
 
 =head1 SEE ALSO
 
-L<pit gem|http://lowreal.rubyforge.org/pit/>
+L<http://lowreal.rubyforge.org/pit/> is pit in Ruby.
 
 =cut
