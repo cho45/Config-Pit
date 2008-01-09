@@ -11,7 +11,7 @@ use lib file( $FindBin::RealBin, '..', 'lib' )->stringify;
 use Config::Pit;
 
 ({
-    get    => sub {-t STDOUT ? warn 'do not output to tty.' :  print Dump(pit_get(shift)),"\n"},
+    get    => \&Config::Pit::pipe,
     set    => \&Config::Pit::set,
     switch => \&Config::Pit::switch,
 }->{(shift || '')} || \&pod2usage )->($ARGV[1]);

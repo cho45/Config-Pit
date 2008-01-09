@@ -79,9 +79,13 @@ sub switch {
 	my $ret = $config->{profile};
 	$config->{profile} = $name;
 	YAML::Syck::DumpFile($config_file, $config);
+	warn "Config::Pit: profile switch to $name from $ret.";
 	return $ret;
 }
 
+sub pipe {
+	-t STDOUT ? warn 'do not output to tty.' :  print Dump(get(shift)), "\n"; ## no critic
+}
 
 sub _load {
 	my $config = _config();
