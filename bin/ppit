@@ -18,6 +18,10 @@ use Config::Pit;
 
 __END__
 
+=head1 NAME 
+
+ppit - pit for perl
+
 =head1 SYNOPSIS
 
     $ ppit [get|set|switch] <value>
