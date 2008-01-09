@@ -1,5 +1,13 @@
 2008-01-09  cho45
 
+	* Release 0.01
+
+2008-01-09  cho45
+
+	* [r4277] ChangeLog, Changes:
+	  
+	  rename to ChangeLog
+
 	* [r4275] t/97_podspell.t:
 	  
 	  Append podspell test
