@@ -32,7 +32,7 @@ is($config->{foo}, "0100", "string like octal number (get returned value)");
 
 my $profile = $Config::Pit::directory->file("default.yaml");
 
-my $ruby_res = `ruby -ryaml -e 'print YAML.load_file(%($profile))["test"]["foo"]'`;
+my $ruby_res = `ruby -ryaml -e 'print YAML.load(File.read(%($profile)))["test"]["foo"]'`;
 is($ruby_res, "0100", "ruby yaml");
 
 1;
