@@ -120,9 +120,9 @@ Config::Pit - Manage settings
 
   use Config::Pit;
 
-  my $config = pit_get("twitter.com", require => {
-    "username" => "your username on twitter",
-    "password" => "your password on twitter"
+  my $config = pit_get("example.com", require => {
+    "username" => "your username on example",
+    "password" => "your password on example"
   });
   # if the fields are not set, open setting by $EDITOR
   # with YAML-dumped default values (specified at C<require>).
@@ -136,8 +136,8 @@ Original library is written in Ruby and published as pit gem with management com
 You can install it by rubygems:
 
   $ sudo gem install pit
-  $ pit set twitter.com
-  # open setting of twitter.com with $EDITOR.
+  $ pit set example.com
+  # open setting of example.com with $EDITOR.
 
 =over
 
@@ -145,11 +145,11 @@ You can install it by rubygems:
 
 Get setting named C<setting_name> from current profile.
 
-  my $config = Config::Pit::get("twitter.com");
+  my $config = Config::Pit::get("example.com");
 
 This is same as below:
 
-  my $config = pit_get("twitter.com");
+  my $config = pit_get("example.com");
 
 opts:
 
@@ -157,9 +157,9 @@ opts:
 
 =item require
 
-  my $config = pit_get("twitter.com", require => {
-    "username" => "your username on twitter",
-    "password" => "your password on twitter"
+  my $config = pit_get("example.com", require => {
+    "username" => "your username on example.com",
+    "password" => "your password on example.com"
   });
 
 C<require> specified, module check the required fields all exist in setting.
@@ -171,7 +171,7 @@ If not exist, open the setting by $EDITOR with merged setting with current setti
 
 Set setting named C<setting_name> to current profile.
 
-  Config::Pit::set("twitter.com"); #=> will open setting with $EDITOR
+  Config::Pit::set("example.com"); #=> will open setting with $EDITOR
 
 opts:
 
@@ -179,7 +179,7 @@ opts:
 
 =item data
 
-  Config::Pit::set("twitter.com", data => {
+  Config::Pit::set("example.com", data => {
     username => "foobar",
     password => "barbaz",
   });
@@ -191,7 +191,7 @@ When C<data> specified, will not open C<$EDITOR> and set the data directly.
 =item config
 
 
-  Config::Pit::set("twitter.com", config => {
+  Config::Pit::set("example.com", config => {
     username => "config description or default value",
     password => "same as above",
   });
