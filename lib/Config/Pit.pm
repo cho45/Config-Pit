@@ -79,7 +79,7 @@ sub switch {
 	my $ret = $config->{profile};
 	$config->{profile} = $name;
 	YAML::Syck::DumpFile($config_file, $config);
-	print STDERR "Config::Pit: Profile switch to $name from $ret.\n";
+	print STDERR "Config::Pit: Profile switch to $name from $ret.\n" unless $name eq $ret;
 	return $ret;
 }
 
