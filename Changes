@@ -1,6 +1,6 @@
-0.01 -
+0.02 -
 	 * Fix config filename to same as pit in ruby.
-	 * Avoid violate global switch of YAML::Syck.
+	 * Avoid violating global switch (ImplicitTyping, SingleQuote) of YAML::Syck.
 
 0.01 2008-01-09T19:19:31+09:00
 	First release.
