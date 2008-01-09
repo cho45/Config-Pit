@@ -17,7 +17,7 @@ use List::MoreUtils qw(all);
 
 our $VERSION      = '0.01';
 our $directory    = dir(File::HomeDir->my_home, ".pit");
-our $config_file  = $directory->file("config.yaml");
+our $config_file  = $directory->file("pit.yaml");
 our $profile_file = undef;
 
 sub get {
@@ -132,7 +132,7 @@ Config::Pit - Manage settings
 =head1 DESCRIPTION
 
 Config::Pit is account setting management library.
-This library automates editting settings used in scripts.
+This library automates editing settings used in scripts.
 
 Original library is written in Ruby and published as pit gem with management command.
 
@@ -241,6 +241,6 @@ it under the same terms as Perl itself.
 
 L<http://lowreal.rubyforge.org/pit/> is pit in Ruby.
 
-C<bin/ppit> is pit command in Perl.
+F<bin/ppit> is pit command in Perl.
 
 =cut
