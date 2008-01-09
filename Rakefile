@@ -14,7 +14,7 @@ NAME = makefilepl.read[/name '([^']+)';/, 1]
 task :default => :test
 
 desc "make test"
-task :test => ["Makefile", "MANIFEST"] do
+task :test => ["Makefile"] do
 	sh %{make test}
 end
 
@@ -29,8 +29,9 @@ task :install => ["Makefile"] do
 end
 
 desc "release"
-task :release => [:test, :shipit]
+task :release => :shipit
 
+task :shipit => [:test, "MANIFEST"]
 Rake::ShipitTask.new do |s|
 	ENV["LANG"] = "C"
 	s.Step.new {
@@ -53,6 +54,7 @@ Rake::ShipitTask.new do |s|
 end
 
 
+
 file "Makefile" => ["Makefile.PL"] do
 	sh %{perl Makefile.PL}
 end
@@ -60,6 +62,7 @@ end
 file "Makefile.PL"
 
 file "MANIFEST" => Dir["**/*"].delete_if {|i| i == "MANIFEST" }  do
+	rm "MANIFEST" if File.exist?("MANIFEST")
 	sh %{perl Makefile.PL}
 	sh %{make}
 	sh %{make manifest}
