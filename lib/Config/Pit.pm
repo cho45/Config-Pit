@@ -153,7 +153,7 @@ This is same as below:
 
 opts:
 
-=over 1
+=over
 
 =item require
 
@@ -175,7 +175,7 @@ Set setting named C<setting_name> to current profile.
 
 opts:
 
-=over 2
+=over
 
 =item data
 
