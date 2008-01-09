@@ -139,9 +139,9 @@ You can install it by rubygems:
   $ pit set example.com
   # open setting of example.com with $EDITOR.
 
-=over
+=head1 FUNCTIONS
 
-=item Config::Pit::get(setting_name, opts)
+=head2 Config::Pit::get(setting_name, opts)
 
 Get setting named C<setting_name> from current profile.
 
@@ -153,7 +153,7 @@ This is same as below:
 
 opts:
 
-=over
+=over 1
 
 =item require
 
@@ -167,7 +167,7 @@ If not exist, open the setting by $EDITOR with merged setting with current setti
 
 =back
 
-=item Config::Pit::set(setting_name, opts)
+=head2 Config::Pit::set(setting_name, opts)
 
 Set setting named C<setting_name> to current profile.
 
@@ -175,7 +175,7 @@ Set setting named C<setting_name> to current profile.
 
 opts:
 
-=over
+=over 2
 
 =item data
 
@@ -185,8 +185,6 @@ opts:
   });
 
 When C<data> specified, will not open C<$EDITOR> and set the data directly.
-
-=over
 
 =item config
 
@@ -200,7 +198,7 @@ Open C<$EDITOR> with merged setting with specified config.
 
 =back
 
-=item Config::Pit::switch(profile_name);
+=head2 Config::Pit::switch(profile_name);
 
 Switch profile to C<profile_name>.
 
@@ -220,10 +218,6 @@ Profile is setting set:
 
   $ pit get foobar
   # foo bar...
-
-=back
-
-=back
 
 =head1 AUTHOR
 
