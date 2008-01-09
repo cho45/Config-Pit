@@ -25,7 +25,7 @@ sub get {
 	my $profile = _load();
 	local $YAML::Syck::ImplicitTyping = 1;
 	local $YAML::Syck::SingleQuote    = 1;
-	
+
 	if ($opts{require}) {
 		unless (all { defined $profile->{$name}->{$_} } keys %{$opts{require}}) {
 			# merge
@@ -79,12 +79,12 @@ sub switch {
 	my $ret = $config->{profile};
 	$config->{profile} = $name;
 	YAML::Syck::DumpFile($config_file, $config);
-	warn "Config::Pit: profile switch to $name from $ret.";
+	print STDERR "Config::Pit: Profile switch to $name from $ret.\n";
 	return $ret;
 }
 
 sub pipe {
-	-t STDOUT ? warn 'do not output to tty.' :  print Dump(get(shift)), "\n"; ## no critic
+	-t STDOUT ? print STDERR 'do not output to tty.' :  print Dump(get(shift)), "\n"; ## no critic
 }
 
 sub _load {
