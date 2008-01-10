@@ -1,4 +1,4 @@
-0.02 -
+0.02 2008-01-10T17:41:59+09:00
 	 * Fix config filename to same as pit in ruby.
 	 * Avoid violating global switch (ImplicitTyping, SingleQuote) of YAML::Syck.
 	 * Fix 'ppit set' for interoperability.

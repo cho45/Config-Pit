@@ -17,7 +17,7 @@ use File::Spec;
 use File::Temp;
 use List::MoreUtils qw(all);
 
-our $VERSION      = '0.01';
+our $VERSION      = '0.02';
 our $directory    = dir(File::HomeDir->my_home, ".pit");
 our $config_file  = $directory->file("pit.yaml");
 our $profile_file = undef;
