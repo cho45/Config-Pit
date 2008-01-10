@@ -21,6 +21,7 @@ end
 desc "make clean"
 task :clean => ["Makefile"] do
 	sh %{make clean}
+	rm "MANIFEST"
 end
 
 desc "make install"
